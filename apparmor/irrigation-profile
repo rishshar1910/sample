@@ -1,0 +1,23 @@
+#include <tunables/global>
+profile irrigation-profile flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  network inet,
+  network inet6,
+  network unix,
+
+  capability,
+  deny capability sys_admin,
+  signal,
+
+  file,
+  deny /etc/shadow r,
+  deny /etc/gshadow r,
+  deny /etc/** w,
+  deny /app/** w,
+
+  deny /bin/** x,
+  deny /sbin/** x,
+  deny /usr/bin/** x,
+  deny /usr/sbin/** x,
+}

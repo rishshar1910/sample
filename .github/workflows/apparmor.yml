@@ -1,0 +1,24 @@
+name: irrigation-apparmor
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  apparmor:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check AppArmor support
+        run: |
+          uname -r
+          cat /sys/module/apparmor/parameters/enabled
+          sudo aa-status | head -3
+      - name: Load profile
+        run: |
+          sudo cp apparmor/irrigation-profile /etc/apparmor.d/irrigation-profile
+          sudo apparmor_parser -r /etc/apparmor.d/irrigation-profile
+          sudo aa-status | grep irrigation-profile
+      - name: Build image
+        run: docker build -t irrigation-api:1.0 .
+      - name: Run stack and AppArmor tests
+        run: bash apparmor/test.sh
