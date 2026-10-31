@@ -1,0 +1,5 @@
+# Add under spec.template.spec.containers[0] on a host where AppArmor is enabled:
+securityContext:
+  appArmorProfile:
+    type: Localhost
+    localhostProfile: k8s-deny-write

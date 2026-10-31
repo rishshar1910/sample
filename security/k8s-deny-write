@@ -1,0 +1,9 @@
+#include <tunables/global>
+profile k8s-deny-write flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+  file,
+  network,
+  capability,
+  deny /app/** w,
+  deny /etc/** w,
+}
